@@ -14,3 +14,4 @@
 
 # Ignore config files with sensible data inside.
 /config/facebook.yml
+*.swp
