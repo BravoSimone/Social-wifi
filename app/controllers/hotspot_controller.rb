@@ -2,8 +2,11 @@
 # 14/07/2015 Bravo Simone.
 
 class HotspotController < ApplicationController
-end
 
-# Controller to manage the login
-def hotspotlogin
+  def index
+  end
+
+  def login
+    @user = Hotspot.koala(request.env['omniauth.auth']['credentials'])
+  end
 end
