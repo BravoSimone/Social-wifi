@@ -1,41 +1,7 @@
 <?php
 
-// TODO:
-// - Refactor, but keeping original behaviour first
-// - Use bootstrap.css
-// - Use simple xView (create a git project from RestQL xView implementation)
-//   - one view per 'res' state
-//   - one window layout, one popup layout
-//   - separate js files
-// - Keep debugging feature (keep it kiss)
-//   - one view for debug
-// - Find a way of finding the popup back, in case of accidental close (or provide a cofirm-close dialog)
-//   - Generate URL? Keep params in session?
-//   - Do it as an optional 'module'
-// - Replace $userpassword param with $auth_type (PAP, plain?, other-possibles?)
-//   - Discover and make out  page<>UAM HTTP Messages (cf. attempt_login())
-// - Heavily cross-browser testable (ie3..chrome9 if possible)
-// - Place popup so that it doesn't get overlayed by the main window
-// - Create a JS UAM API for querying the NAS
-//   - Generates https requests to NAS (automagically using the URL get params)
-//   - Catches the 304 Redirect response and parses it's URL GET params)
-//   - Creates and returns a hashmap from them
-//   => Enables a one-page js-based login app
-
-// Maqui-wifi TODO:
-// - Display a map with spots on login/signup/about/pricing page(s)
-// - Make a trial account generation system (2 minutes timeout)
-//   - "Please enter your email address and receive a free trial login code"
-// - 
-
-
-
 # UAM Configuration
 $uamsecret = "sharedkey";
-# Uncomment the following line if you want to use ordinary user-password
-# for radius authentication. Must be used together with $uamsecret.
-#$userpassword=1;
-
 ## Controller
 
 # 0: Login attempt (if all mandatory authentication parameters are set)
@@ -48,7 +14,7 @@ if ($_GET['res'] == 'notyet') display_notyet();
 if ($_GET['res'] == 'failed') display_failed();
 # 1: Login successful
 if ($_GET['res'] == 'success') display_success();
-# 3: Logged out (TODO: Display a timeout message, and options)
+# 3: Logged out 
 if ($_GET['res'] == 'logoff') display_logoff();
 if ($_GET['res'] == 'timeout') display_logoff(); // timeout 'res' is not native
 # 4: Tried to login while already logged in
@@ -86,15 +52,13 @@ function attempt_login() {
 }
 
 function display_notyet() {
-// TODO: remove this unused $result (for cleaning step before refactoring)
-//    global $result;
-//    $result = 5;    
 
     echo '<h1>Please login</h1>';
     print implode('', array(
         '<style>th {test-align:right}</style>',
         '<form name="form1" method="get" action="">',
             '<input type="hidden" name="chal" value="', $_GET['challenge'], '">',
+# Implement
             '<input type="hidden" name="uamip" value="', $_GET['uamip'], '">',
             '<input type="hidden" name="uamport" value="', $_GET['uamport'], '">',
             '<input type="hidden" name="userurl" value="', $_GET['userurl'], '">',
@@ -114,11 +78,6 @@ function display_notyet() {
 }
 
 function display_failed() {
-// TODO: remove this unused $result (for cleaning step before refactoring)
-//    global $result;
-//    $result = 2;
-
-    // TODO: Simply echo message + login form again
     echo '<h1>Login failed :(</h1>';
     print implode('', array(
         '<a href="http://', $_GET['uamip'], ':', $_GET['uamport'], '/prelogin', "?userurl={$_GET['userurl']}", '">',
@@ -155,9 +114,6 @@ function display_success_popup() {
 }
 
 function display_logoff() {
-// TODO: remove this unused $result (for cleaning step before refactoring)
-//    global $result;
-//    $result = 3; 
     echo '<h1>Logged out</h1>';
     print implode('', array(
         '<a href="http://', $_GET['uamip'], ':', $_GET['uamport'], '/prelogin', '">',
@@ -167,9 +123,6 @@ function display_logoff() {
 }
 
 function display_already() {
-// TODO: remove this unused $result (for cleaning step before refactoring)
-//    global $result;
-//    $result = 4;
     echo '<h1>Already logged in</h1>';
     print implode('', array(
         '<a href="http://', $_GET['uamip'], ':', $_GET['uamport'], '/logoff', '">',
@@ -181,12 +134,6 @@ function display_already() {
 
 # HTML rendering functions (kind of)
 function print_header() {
-    // TODO:
-    // Removed features to re-enable:
-    // - Username field autofocus.
-    // - Popup window focus management (dunno what it did).
-    // NOT removed feature, to ENSURE KEEPING:
-    // - If popup opening fails somehow, the main page is not redirected to $userurl.
     global $title;
     
     $loginpath = $_SERVER['PHP_SELF'];
