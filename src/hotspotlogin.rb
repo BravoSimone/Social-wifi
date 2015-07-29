@@ -29,16 +29,18 @@ end
 
 # Login function
 def attempt_login
-  @hexchal = params['chal'].chars.pack('H32')
+  chal = params['chal']
+  password = params['password']
+  $uamsecret = "Secreto"
+  @hexchal = Array[chal].pack("H32")
   if $uamsecret
-    newchal = Digest::MD5.digest(@hexchal.concat($uamsecret)).chars.pack('H*')
+    newchal = Array[Digest::MD5.hexdigest(@hexchal + $uamsecret)].pack("H*")
   else
     newchal = @hexchal
   end
-  response = Digest::MD5.digest('\0'.concat(params['password'].concat(newchal)))
-  newpwd = params['password'].chars.pack('a32').strip
-
-  pappassword # =  implode ('', unpack("H32", ($newpwd ^ $newchal)));
+  response = Digest::MD5.hexdigest("\0" + password + newchal)
+  newpwd = Array[password].pack("a32")
+  pappassword = newpwd.xor(newchal).unpack("H32").first
 end
 
 def display_notye
