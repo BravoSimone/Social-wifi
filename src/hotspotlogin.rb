@@ -13,16 +13,22 @@ def login
   # If all params are not set:
   case params['res']
   when 'notyet'
-    # display_notye
+    @case = params['res']
+    display_notyet
   when 'failed'
+    @case = params['res']
     # display_faied
   when 'success'
+    @case = params['res']
     # display_success
   when 'logoff' or 'timeout'
+    @case = params['res']
     # display_logoff
   when 'already'
+    @case = params['res']
     # display_already
   when 'success_popup'
+    @case = params['res']
     # display_success
   end
 end
@@ -43,7 +49,7 @@ def attempt_login
   pappassword = newpwd.xor(newchal).unpack("H32").first
 end
 
-def display_notye
+def display_notyet
 end
 
 def display_faied
