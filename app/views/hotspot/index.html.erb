@@ -1,1 +1,16 @@
-<%= link_to "Facebook Login", '/auth/facebook' %>
+<% case @case %>
+<% when "notyet" %>
+<meta http-equiv="refresh" content="0;URL=www.localhost/hotspot/notyet">
+<% when "failed" %>
+<meta http-equiv="refresh" content="0;URL=www.localhost/hotspot/failed">
+<% when "success" %>
+<meta http-equiv="refresh" content="0;URL=www.localhost/hotspot/success">
+<% when "logoff" %>
+<meta http-equiv="refresh" content="0;URL=www.localhost/hotspot/logoff">
+<% when "timeout" %>
+<meta http-equiv="refresh" content="0;URL=www.localhost/hotspot/timeout">
+<% when "already" %>
+<meta http-equiv="refresh" content="0;URL=www.localhost/hotspot/already">
+<% when "success" %>
+<meta http-equiv="refresh" content="0;URL=www.localhost/hotspot/success">
+<% end %>
